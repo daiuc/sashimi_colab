@@ -1,0 +1,22 @@
+#!/bin/bash
+
+data_pre_region="chr10:99989193-100989193"
+top_snp="chr10:99514301:T:C"
+
+plot_region="chr10:100500000-100540000"
+counts=counts_clu_113382.txt
+
+vcf=ZOD14598_AD_GRM_WGS_2021-04-29_chr10.recalibrated_variants.leftnorm.filtered.AF.chr10_99489193_101489193.test_samples.rename.new.recode.vcf
+sample_id_list=individuals.txt
+
+clu=$(echo $counts | sed -n 's/[^_]*_\(.*\)\.txt/\1/p')
+out_pdf=sashimi_${clu}.pdf
+
+# data prep
+pyGenomeTracks --tracks plot.ini \
+            --region  $plot_region \
+            --title "QTL:${plot_region}|TOP:${top_snp}|$clu"\
+            --width 30 \
+            --trackLabelFraction .1 --fontSize 10 \
+            -out $out_pdf \
+    && echo "plot done"
